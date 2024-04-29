@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+body{
+    background-color: #cac2c2;
+    padding: 20px;
+}
+.header {
+    background-color: #f0f0f0;
+    padding: 20px;
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 15px;
+}
+.header h1 {
+    margin-bottom: 10px;
+    text-align: center;
+    font-family: Verdana, sans-serif, Arial, sans-serif;
+}
+.add-expense {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.add-expense input[type="text"],
+.add-expense input[type="number"],
+.add-expense button,
+.add-expense input[type="date"] {
+    margin: 5px;
+    padding: 8px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+.add-expense button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+.add-expense button:hover {
+    background-color: #45a049;
+}
+.expense-list {
+    margin-top: 20px;
+}
+.expense {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 15px;
+    font-size: 20px;
+    margin: 5px;
+}
+.expense input[type="date"] {
+    margin: 5px;
+    padding: 5px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+}
+.expense button {
+    background-color: #f44336;
+    font-size: 20px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 10px;
+}
+.expense button:hover {
+    background-color: #da190b;
+}
+.active{
+    color: white;
+    text-align: center;
+}
