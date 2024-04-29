@@ -10,7 +10,7 @@ export class ExpensesRepository {
             data: { 
                 date, 
                 name,
-                value
+                value: String(value)
             }
         })
         return expense
@@ -29,7 +29,7 @@ export class ExpensesRepository {
             data: {
                 name,
                 date,
-                value
+                value: String(value)
             }
         })
         return expense

@@ -1,23 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" ng-app="gastos-App"> 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Gastos</title>
     <link rel="stylesheet" href="./assets/css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.8.3/angular-locale_pt-br.min.js></script>
 </head>
-<body>
+<body ng-controller="GastosController">
     <div class="header">
         <h1>Controle de Gastos</h1>
         <label class="add-expense">
-            <input type="text" id="text" placeholder="Expense Name">
-            <input type="number" id="expense-value" placeholder="Expense Value">
-            <input type="date" id="date">
-            <button type="button">+</button>
+            <input type="text" id="text" placeholder="Expense Name" ng-model="name">
+            <input type="number" id="expense-value" placeholder="Expense Value" ng-model="value">
+            <input type="date" id="date" ng-model="date">
+            <button type="button" ng-click="addExpense()">+</button>
         </label>
     </div>
     <div class="expense-list">
-        <p class="no-expense active">Nenhum gasto registrado</p>
+        <div class="expense" ng-repeat="expense in expenseList">
+            <p> {{expense.date | date:"dd/MM/yyyy":"pt-BR"}}</p>
+            <p>{{expense.name}}</p>
+            <p>{{expense.value | currency:"R$"}}</p>
+            <button ng-click="deleteExpense(expense.id)">Deletar</button>
+        </div>
+        <p ng-show="expenseList.length == 0" class="no-expense">Nenhum gasto registrado</p>
     </div>
     <script src="./assets/js/main.js"></script>
 </body>

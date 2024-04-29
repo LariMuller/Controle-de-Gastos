@@ -1,95 +1,47 @@
-const inputAddExpenseEl = document.querySelector('.add-expense input')
-const expenseDateEl = document.querySelector('#date')
-const expenseValueEl = document.querySelector('#expense-value')
+const app = angular.module('gastos-App', []);
 
-const buttonAddExpenseEl = document.querySelector('.add-expense button')
-const expenseListEl = document.querySelector('.expense-list')
-const noExpenseEl = document.querySelector('.no-expense')
 
-const formatNumbers = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format
- 
-buttonAddExpenseEl.addEventListener('click', () => {
-    const name = inputAddExpenseEl.value
-    const date = expenseDateEl.value
-    const value = expenseValueEl.value
-    createExpense(name, date, value)
+app.controller("GastosController", ($scope, $http) =>{
+    $scope.formatNumbers = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format
+
+    $scope.date = ''
+    $scope.value = ''
+    $scope.name = ''
+    $scope.expenseList = []
+
+    $scope.addExpense = ()=>{
+        if (!$scope.name || !$scope.value || !$scope.date){
+            return alert("Digite em todos os campos.")
+        }
+        $http.post("http://localhost:6842/api/expenses", 
+            {date: $scope.date, name: $scope.name, value: $scope.value})
+        .then(() => {
+            $scope.loadExpenseList()
+        }, () => {
+            alert("Aconteceu algum erro")
+        })
+    }
+
+    $scope.deleteExpense = (id)=>{
+        $http.delete('http://localhost:6842/api/expenses/' + id).then(() =>{
+            $scope.loadExpenseList()
+        })
+    }
+
+    $scope.updateExpense = (id) => {
+        const expense = $scope.expenseList.find(expense => expense.id === id)
+
+        $http.patch('http://localhost:6842/api/expenses/' + id,
+        task
+    ).then(() => {
+        $scope.loadExpenseList
+    })
+    }
+
+    $scope.loadExpenseList = async()=> {
+        const { data } = await $http.get("http://localhost:6842/api/expenses")
+        $scope.expenseList = data
+        $scope.$apply()
+    }
+    $scope.loadExpenseList()
 })
- 
-function deleteExpense(id) {
-    fetch(`http://localhost:6842/api/expenses/${id}`, { method: 'DELETE' })
-      .then(() => {
-        getAllExpenses()
-    })
-  }
- 
-function createExpense(name, date, value) {
-    fetch('http://localhost:6842/api/expenses/', { 
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name: name, date: date, value: value})
-    })
-        .then(() => {
-            getAllExpenses()
-        })
-}
- 
-function updateExpense(id, name, date, value) {
-    fetch('http://localhost:6842/api/expenses/' + id, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name: name, date: date, value: value})
-    })
-        .then(() => {
-            getAllExpenses()
-        })
-}
- 
-function mountExpense(expense) {
-    const expenseEl = document.createElement('label')
-    const deleteButtonEl = document.createElement('button')
-    const dateEl = document.createElement('input')
-    const nameEl = document.createElement('p')
-    const valueEl = document.createElement('p')
- 
-    expenseEl.className = 'expense'
-
-    deleteButtonEl.innerHTML = 'Deletar'
-    deleteButtonEl.addEventListener('click', () => {
-        deleteExpense(expense.id)
-    })
-
-    dateEl.type = 'date'
-    dateEl.name = 'expense-' + expense.id
-    dateEl.value = expense.date
-
-    nameEl.innerHTML = expense.name
-
-    valueEl.innerHTML = formatNumbers(expense.value)
- 
-    expenseEl.appendChild(dateEl)
-    expenseEl.appendChild(nameEl)
-    expenseEl.appendChild(valueEl)
-    expenseEl.appendChild(deleteButtonEl)
- 
-    expenseListEl.appendChild(expenseEl)
-}
- 
-function getAllExpenses() {
-    fetch('http://localhost:6842/api/expenses')
-        .then((response) => response.json())
-        .then(data => {
-            if (!data || data.length === 0) {
-                expenseListEl.innerHTML = '<p class="no-expenses active">Nenhum gasto cadastrado.</p>'
-            } else {
-                expenseListEl.innerHTML = ''
-                data.forEach(mountExpense)
-            }
-        })
-}
- 
- 
-getAllExpenses()

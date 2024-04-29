@@ -76,7 +76,7 @@ body{
 .expense button:hover {
     background-color: #da190b;
 }
-.active{
-    color: white;
+.no-expense{
     text-align: center;
+    font-size: 25px;
 }
